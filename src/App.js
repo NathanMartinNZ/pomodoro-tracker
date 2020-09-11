@@ -1,5 +1,6 @@
 import React from "react"
 
+import "./stylesheet.css"
 import { Container } from "@material-ui/core"
 
 import Header from "./components/Header"
@@ -11,7 +12,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header />
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <PomodoroTimer />
           <DailyCount />
         </Container>

@@ -1,10 +1,14 @@
 import React from 'react'
-import { Button } from '@material-ui/core';
+import { Box, AppBar, Typography } from '@material-ui/core';
 
 function Header() {
   return (
     <>
-      <div>Header</div>
+      <AppBar position="static">
+        <Box p={1}>
+          <Typography variant="h5">Pomodoro Tracker</Typography>
+        </Box>
+      </AppBar>
     </>
   )
 }
