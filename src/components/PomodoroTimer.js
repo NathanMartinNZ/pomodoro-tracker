@@ -1,22 +1,34 @@
 import React, { useEffect, useMemo } from 'react'
 import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
-
+import db from "../firebase";
 import { useRecoilState } from "recoil"
-import { millisecondsAtom, timerEnabledAtom } from "../atoms"
+import { millisecondsAtom, timerEnabledAtom, pomodorosAtom } from "../atoms"
 
 function PomodoroTimer() {
   const [milliseconds, setMilliseconds] = useRecoilState(millisecondsAtom)
   const [timerEnabled, setTimerEnabled] = useRecoilState(timerEnabledAtom)
+  const [pomodoros, setPomodoros] = useRecoilState(pomodorosAtom)
 
   useEffect(() => {
     const rounded = Math.floor(milliseconds)
-    if(timerEnabled && Math.floor(milliseconds) > 0) {
+    if(timerEnabled && rounded > 0) {
       setTimeout(() => {
         setMilliseconds(milliseconds-0.1)
       }, 100)
     } else if(timerEnabled && !rounded) {
       console.log("countdown finished")
+      // Reset timer
       setTimerEnabled(false)
+
+      // Set pomodoros in DB
+      const firestoreDb = db.firestore()
+      firestoreDb
+        .collection("pomodoros")
+        .doc("pZ3JwKUJ7oV32wlb2EAx") // TODO: change to today's doc
+        .update({ count: pomodoros+1 })
+      
+      // Increment pomodoros by 1
+      setPomodoros(pomodoros+1)
     }
   })
 
@@ -31,7 +43,7 @@ function PomodoroTimer() {
 
   const resetTimer = () => {
     setTimerEnabled(false)
-    setTimeout(() => setMilliseconds(1500), 101)
+    setTimeout(() => setMilliseconds(5), 101)
   }
 
   return (
@@ -39,13 +51,15 @@ function PomodoroTimer() {
       <Grid item xs={12}>
         <Paper>
           <Typography variant="h1">{calcMinutes}:{calcSeconds}</Typography>
-          <Button 
-            variant="contained"
-            color="primary"
-            onClick={() => setTimerEnabled(!timerEnabled)}
-          >
-            {!timerEnabled ? "Start" : "Stop"}
-          </Button>
+          {!!Math.floor(milliseconds)&& (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setTimerEnabled(!timerEnabled)}
+            >
+              {!timerEnabled ? "Start" : "Stop"}
+            </Button>
+          )}
           <Button 
             variant="contained"
             color="default"
