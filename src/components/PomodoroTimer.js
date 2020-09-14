@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, Box } from '@material-ui/core';
 import updateDb from "../helpers/updateDb"
 import { useRecoilState } from "recoil"
 import { millisecondsAtom, timerEnabledAtom, pomodorosAtom } from "../atoms"
@@ -43,7 +43,7 @@ function PomodoroTimer() {
   }
 
   return (
-    <>
+    <Box>
       <Typography variant="h1">{calcMinutes}:{calcSeconds}</Typography>
       {!!Math.floor(milliseconds)&& (
         <Button
@@ -61,7 +61,7 @@ function PomodoroTimer() {
       >
         Reset
       </Button>
-    </>
+    </Box>
   )
 }
 
