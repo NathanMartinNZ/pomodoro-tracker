@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import db from "./firebase";
 
 import "./index.css"
-import { Container } from "@material-ui/core"
+import { Container, Box, Grid, Paper } from "@material-ui/core"
 
 import { useRecoilState } from "recoil"
 import { pomodorosAtom } from "./atoms"
@@ -37,10 +37,16 @@ function App() {
     <div className="App">
       <Header />
       {!loading && (
-        <Container maxWidth="md">
-          <PomodoroTimer />
-          <DailyCount />
-        </Container>
+        <Box mt={6}>
+          <Grid item xs={12} md={6}>
+            <Paper>
+              <Container maxWidth="md">
+                <PomodoroTimer />
+                <DailyCount />
+              </Container>
+            </Paper>
+          </Grid>
+        </Box>
       )}
     </div>
   )

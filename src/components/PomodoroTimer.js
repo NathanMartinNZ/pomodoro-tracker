@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
-import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
-import db from "../firebase";
+import { Typography, Button } from '@material-ui/core';
+import updateDb from "../helpers/updateDb"
 import { useRecoilState } from "recoil"
 import { millisecondsAtom, timerEnabledAtom, pomodorosAtom } from "../atoms"
 
@@ -21,11 +21,7 @@ function PomodoroTimer() {
       setTimerEnabled(false)
 
       // Set pomodoros in DB
-      const firestoreDb = db.firestore()
-      firestoreDb
-        .collection("pomodoros")
-        .doc("pZ3JwKUJ7oV32wlb2EAx") // TODO: change to today's doc
-        .update({ count: pomodoros+1 })
+      updateDb(pomodoros+1)
       
       // Increment pomodoros by 1
       setPomodoros(pomodoros+1)
@@ -47,29 +43,25 @@ function PomodoroTimer() {
   }
 
   return (
-    <Box mt={2}>
-      <Grid item xs={12}>
-        <Paper>
-          <Typography variant="h1">{calcMinutes}:{calcSeconds}</Typography>
-          {!!Math.floor(milliseconds)&& (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setTimerEnabled(!timerEnabled)}
-            >
-              {!timerEnabled ? "Start" : "Stop"}
-            </Button>
-          )}
-          <Button 
-            variant="contained"
-            color="default"
-            onClick={resetTimer}
-          >
-            Reset
-          </Button>
-        </Paper>
-      </Grid>
-    </Box>
+    <>
+      <Typography variant="h1">{calcMinutes}:{calcSeconds}</Typography>
+      {!!Math.floor(milliseconds)&& (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setTimerEnabled(!timerEnabled)}
+        >
+          {!timerEnabled ? "Start" : "Stop"}
+        </Button>
+      )}
+      <Button 
+        variant="contained"
+        color="default"
+        onClick={resetTimer}
+      >
+        Reset
+      </Button>
+    </>
   )
 }
 
