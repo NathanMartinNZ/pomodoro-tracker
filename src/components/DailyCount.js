@@ -2,7 +2,7 @@ import React from 'react'
 import { Box } from '@material-ui/core';
 import { useRecoilState } from "recoil"
 import { pomodorosAtom } from "../atoms"
-import updateDb from "../helpers/updateDb"
+import updateDb from "../utils/updateDb"
 
 function DailyCount() {
   const [pomodoros, setPomodoros] = useRecoilState(pomodorosAtom)

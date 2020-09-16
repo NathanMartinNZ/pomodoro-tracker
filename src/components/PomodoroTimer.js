@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Typography, Button, Box } from '@material-ui/core';
-import updateDb from "../helpers/updateDb"
+import updateDb from "../utils/updateDb"
 import { useRecoilState } from "recoil"
 import { pomodorosAtom } from "../atoms"
 
