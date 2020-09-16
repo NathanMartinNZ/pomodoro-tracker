@@ -3,8 +3,10 @@ import { Typography, Button, Box } from '@material-ui/core';
 import updateDb from "../utils/updateDb"
 import { useRecoilState } from "recoil"
 import { pomodorosAtom } from "../atoms"
+import alarmFile from '../alarm-audio.mp3'
 
 const RESET_INTERVAL_S = 5;
+const alarm = new Audio(alarmFile)
 
 const PomodoroTimer = () => {
   // Component state
@@ -22,6 +24,9 @@ const PomodoroTimer = () => {
           } else {
             // Pause timer
             setPaused(true)
+
+            // Play alarm audio
+            alarm.play()
 
             // Set pomodoros in DB
             updateDb(pomodoros+1)
@@ -50,6 +55,10 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
   const resetTimer = () => {
     setTime(0)
     setPaused(true)
+
+    // Reset timer
+    alarm.pause()
+    alarm.currentTime = 0
   }
 
   return (

@@ -1,10 +1,11 @@
 import db from "../firebase";
 
 const updateDb = (pomodoros) => {
+  const today = new Date(Date.now() - ( 3600 * 1000 * 24))
   const firestoreDb = db.firestore()
   firestoreDb
     .collection("pomodoros")
-    .where("date", ">=", new Date(Date.now() - ( 3600 * 1000 * 24)))
+    .where("date", ">=", today)
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {

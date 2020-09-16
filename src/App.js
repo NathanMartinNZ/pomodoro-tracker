@@ -17,10 +17,11 @@ function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const today = new Date(Date.now() - ( 3600 * 1000 * 24))
     const firestoreDb = db.firestore()
     firestoreDb
       .collection("pomodoros")
-      .where("date", ">=", new Date(Date.now() - ( 3600 * 1000 * 24)))
+      .where("date", ">=", today)
       .get()
       .then((querySnapshot) => {
         let foundDoc = false
