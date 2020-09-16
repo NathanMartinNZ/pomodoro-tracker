@@ -1,68 +1,80 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from "react"
 import { Typography, Button, Box } from '@material-ui/core';
 import updateDb from "../helpers/updateDb"
 import { useRecoilState } from "recoil"
-import { millisecondsAtom, timerEnabledAtom, pomodorosAtom } from "../atoms"
+import { pomodorosAtom } from "../atoms"
 
-function PomodoroTimer() {
-  const [milliseconds, setMilliseconds] = useRecoilState(millisecondsAtom)
-  const [timerEnabled, setTimerEnabled] = useRecoilState(timerEnabledAtom)
+const RESET_INTERVAL_S = 5;
+
+const PomodoroTimer = () => {
+  // Component state
+  const [time, setTime] = useState(0);
+  const [paused, setPaused] = useState(true)
+  // Recoil state
   const [pomodoros, setPomodoros] = useRecoilState(pomodorosAtom)
 
   useEffect(() => {
-    const rounded = Math.floor(milliseconds)
-    if(timerEnabled && rounded > 0) {
-      setTimeout(() => {
-        setMilliseconds(milliseconds-0.1)
-      }, 100)
-    } else if(timerEnabled && !rounded) {
-      console.log("countdown finished")
-      // Reset timer
-      setTimerEnabled(false)
+    if(!paused) {
+      const timerId = setInterval(() => {
+        setTime((t) => {
+          if(t < RESET_INTERVAL_S-1) {
+            return t + 1
+          } else {
+            // Pause timer
+            setPaused(true)
 
-      // Set pomodoros in DB
-      updateDb(pomodoros+1)
-      
-      // Increment pomodoros by 1
-      setPomodoros(pomodoros+1)
+            // Set pomodoros in DB
+            updateDb(pomodoros+1)
+            
+            // Increment pomodoros by 1
+            setPomodoros(pomodoros+1)
+            
+            return t + 1
+          }
+        });
+      }, 1000);
+      return () => clearInterval(timerId);
     }
-  })
+  }, [paused]);
 
-  const calcMinutes = useMemo(() => {
-    return Math.floor((milliseconds/60) << 0)
-  }, [milliseconds])
+  return <Timer time={time} setTime={setTime} paused={paused} setPaused={setPaused} />;
+};
 
-  const calcSeconds = useMemo(() => {
-    const num = Math.floor(milliseconds % 60)
-    return ("0" + num).slice(-2)
-  }, [milliseconds])
+const formatTime = (time) => {
+  return `${String(Math.floor(time / 60)).padStart(2, "0")}:${String(time % 60).padStart(2, "0")}`
+}
+
+const Timer = ({ time, setTime, paused, setPaused }) => {
+  const timeRemain = RESET_INTERVAL_S - time;
 
   const resetTimer = () => {
-    setTimerEnabled(false)
-    setTimeout(() => setMilliseconds(5), 101)
+    setTime(0)
+    setPaused(true)
   }
 
   return (
-    <Box>
-      <Typography variant="h1">{calcMinutes}:{calcSeconds}</Typography>
-      {!!Math.floor(milliseconds)&& (
-        <Button
+    <>
+      <Box>
+        <Typography variant="h1">{formatTime(timeRemain)}</Typography>
+        {!!timeRemain && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setPaused(!paused)}
+          >
+            {paused ? 'Start' : 'Stop'}
+          </Button>
+        )}
+        <Button 
           variant="contained"
-          color="primary"
-          onClick={() => setTimerEnabled(!timerEnabled)}
+          color="default"
+          onClick={resetTimer}
         >
-          {!timerEnabled ? "Start" : "Stop"}
+          Reset
         </Button>
-      )}
-      <Button 
-        variant="contained"
-        color="default"
-        onClick={resetTimer}
-      >
-        Reset
-      </Button>
-    </Box>
-  )
-}
+      </Box>
+    </>
+  );
+};
 
 export default PomodoroTimer
