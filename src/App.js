@@ -20,9 +20,12 @@ function App() {
     const firestoreDb = db.firestore()
     firestoreDb
       .collection("pomodoros")
+      .where("date", ">=", new Date(Date.now() - ( 3600 * 1000 * 24)))
       .get()
       .then((querySnapshot) => {
+        let foundDoc = false
         querySnapshot.forEach((doc) => {
+          foundDoc = true
           console.log(doc.data())
           // Set initial pomodoros for today
           if(doc.data()) {
@@ -30,6 +33,11 @@ function App() {
             setLoading(false)
           }
         })
+        if(!foundDoc) {
+          firestoreDb
+            .collection("pomodoros")
+            .add({ date: new Date(), count: 0 })
+        }
       })
   }, [])
 
