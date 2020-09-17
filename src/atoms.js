@@ -7,5 +7,5 @@ export const pomodorosAtom = atom({
 
 export const startTimeAtom = atom({
   key: "startTime",
-  default: 10
+  default: 1500
 })

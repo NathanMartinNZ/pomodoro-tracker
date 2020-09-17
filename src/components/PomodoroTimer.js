@@ -76,16 +76,21 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
   return (
     <>
       <Box>
+        {/* Timer value */}
         {!selected && <Typography variant="h1" onClick={toggleSelectTime}>{formatTime(timeRemain)}</Typography>}
         {selected && (
-          <TextField 
-            autoFocus 
-            onChange={(e) => handleTimeChange(e.target.value)} 
-            onKeyDown={(e) => handleKeyPress(e)} 
-            onBlur={toggleSelectTime} 
-            value={formatTime(timeRemain)} 
-          />
+          <h1 className="MuiTypography-root MuiTypography-h1 timer-input">
+            <TextField 
+              autoFocus 
+              onChange={(e) => handleTimeChange(e.target.value)} 
+              onKeyDown={(e) => handleKeyPress(e)} 
+              onBlur={toggleSelectTime} 
+              value={formatTime(timeRemain)} 
+            />
+          </h1>
         )}
+
+        {/* Buttons */}
         {!!timeRemain && (
           <Button
             variant="contained"

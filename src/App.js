@@ -46,13 +46,17 @@ function App() {
       <Header />
       {!loading && (
         <Box mt={6}>
-          <Grid item xs={12} md={6}>
-            <Paper>
-              <Container maxWidth="md">
-                <PomodoroTimer />
-                <DailyCount />
-              </Container>
-            </Paper>
+          <Grid container justify="center">
+            <Grid item xs={12} md={4}>
+                <Paper>
+                  <Container>
+                    <Box pt={2} pb={2}>
+                      <PomodoroTimer />
+                      <DailyCount />
+                    </Box>
+                  </Container>
+                </Paper>
+            </Grid>
           </Grid>
         </Box>
       )}
