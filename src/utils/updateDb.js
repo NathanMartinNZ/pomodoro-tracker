@@ -1,7 +1,7 @@
 import db from "../firebase";
 
 const updateDb = (pomodoros) => {
-  const today = new Date(Date.now() - ( 3600 * 1000 * 24))
+  const today = new Date().toDateString()
   const firestoreDb = db.firestore()
   firestoreDb
     .collection("pomodoros")

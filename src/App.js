@@ -17,7 +17,7 @@ function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const today = new Date(Date.now() - ( 3600 * 1000 * 24))
+    const today = new Date().toDateString()
     const firestoreDb = db.firestore()
     firestoreDb
       .collection("pomodoros")
@@ -27,7 +27,6 @@ function App() {
         let foundDoc = false
         querySnapshot.forEach((doc) => {
           foundDoc = true
-          console.log(doc.data())
           // Set initial pomodoros for today
           if(doc.data()) {
             setPomodoros(doc.data().count)

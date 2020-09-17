@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react"
-import { Typography, Button, Box } from '@material-ui/core';
+import { Typography, Button, Box, TextField } from '@material-ui/core';
 import updateDb from "../utils/updateDb"
 import { useRecoilState } from "recoil"
-import { pomodorosAtom } from "../atoms"
+import { pomodorosAtom, startTimeAtom } from "../atoms"
 import alarmFile from '../alarm-audio.mp3'
 
-const RESET_INTERVAL_S = 5;
 const alarm = new Audio(alarmFile)
 
 const PomodoroTimer = () => {
@@ -14,23 +13,21 @@ const PomodoroTimer = () => {
   const [paused, setPaused] = useState(true)
   // Recoil state
   const [pomodoros, setPomodoros] = useRecoilState(pomodorosAtom)
+  const [startTime] = useRecoilState(startTimeAtom)
 
   useEffect(() => {
     if(!paused) {
       const timerId = setInterval(() => {
         setTime((t) => {
-          if(t < RESET_INTERVAL_S-1) {
+          if(t < startTime-1) {
             return t + 1
           } else {
             // Pause timer
             setPaused(true)
-
             // Play alarm audio
             alarm.play()
-
             // Set pomodoros in DB
             updateDb(pomodoros+1)
-            
             // Increment pomodoros by 1
             setPomodoros(pomodoros+1)
             
@@ -50,21 +47,45 @@ const formatTime = (time) => {
 }
 
 const Timer = ({ time, setTime, paused, setPaused }) => {
-  const timeRemain = RESET_INTERVAL_S - time;
+  const [selected, setSelected] = useState(false)
+  const [startTime, setStartTime] = useRecoilState(startTimeAtom)
+  const timeRemain = startTime - time;
 
   const resetTimer = () => {
     setTime(0)
     setPaused(true)
-
     // Reset timer
     alarm.pause()
     alarm.currentTime = 0
   }
 
+  const toggleSelectTime = () => {
+    setSelected(!selected)
+  }
+
+  const handleKeyPress = (e) => {
+    if(e.key === "Enter") { setSelected(!selected) }
+  }
+
+  const handleTimeChange = (newTime) => {
+    const time = newTime.split(":")
+    const seconds = (Number(time[0]) * 60) + Number(time[1])
+    setStartTime(seconds)
+  }
+
   return (
     <>
       <Box>
-        <Typography variant="h1">{formatTime(timeRemain)}</Typography>
+        {!selected && <Typography variant="h1" onClick={toggleSelectTime}>{formatTime(timeRemain)}</Typography>}
+        {selected && (
+          <TextField 
+            autoFocus 
+            onChange={(e) => handleTimeChange(e.target.value)} 
+            onKeyDown={(e) => handleKeyPress(e)} 
+            onBlur={toggleSelectTime} 
+            value={formatTime(timeRemain)} 
+          />
+        )}
         {!!timeRemain && (
           <Button
             variant="contained"
