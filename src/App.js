@@ -37,6 +37,9 @@ function App() {
           firestoreDb
             .collection("pomodoros")
             .add({ date: new Date().toDateString(), count: 0 })
+          
+          setPomodoros(0)
+          setLoading(false)
         }
       })
   }, [])
