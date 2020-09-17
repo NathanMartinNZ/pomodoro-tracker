@@ -22,7 +22,7 @@ function DailyCount() {
   return (
     <Box mt={2} display="flex" flexDirection="row" flexWrap="wrap">
       {pomodorosArr.map((pomodoro) => {return (
-        <Box key={pomodoro} style={{background:'#f2f2f2', cursor:'default', borderRadius:10}} p={3} m={1}>✔</Box>
+        <Box key={pomodoro} style={{background:'#f2f2f2', cursor:'default', borderRadius:10, padding:22}} m={1}>✔</Box>
       )})}
       <Box style={{background:'#3f51b5', cursor:'default', borderRadius:10, fontWeight:'bold'}} p={3} m={1} display="flex" flexDirection="row" flexWrap="wrap">
         <Box onClick={addPomodoro} style={{color:'white', cursor:'pointer'}} mr={2}>+</Box>
