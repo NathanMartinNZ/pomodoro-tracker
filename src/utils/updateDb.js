@@ -5,7 +5,7 @@ const updateDb = (pomodoros) => {
   const firestoreDb = db.firestore()
   firestoreDb
     .collection("pomodoros")
-    .where("date", ">=", today)
+    .where("date", "==", today)
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {

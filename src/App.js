@@ -21,7 +21,7 @@ function App() {
     const firestoreDb = db.firestore()
     firestoreDb
       .collection("pomodoros")
-      .where("date", ">=", today)
+      .where("date", "==", today)
       .get()
       .then((querySnapshot) => {
         let foundDoc = false
@@ -36,7 +36,7 @@ function App() {
         if(!foundDoc) {
           firestoreDb
             .collection("pomodoros")
-            .add({ date: new Date(), count: 0 })
+            .add({ date: new Date().toDateString(), count: 0 })
         }
       })
   }, [])
