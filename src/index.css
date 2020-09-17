@@ -5,3 +5,12 @@ body {
 .timer-input .MuiInput-input {
   font-size: 4rem;
 }
+
+.count-button {
+  padding: 14px
+} 
+@media only screen and (min-width: 600px) {
+  .count-button {
+    padding: 22px
+  }  
+}
