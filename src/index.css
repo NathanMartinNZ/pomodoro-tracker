@@ -2,15 +2,23 @@ body {
   margin: 0;
 }
 
+/* Header */
+.logo,
+.header-link {
+  color: white;
+  text-decoration: none;
+}
+
+/* Pomodoro Timer */
 .timer-input .MuiInput-input {
   font-size: 4rem;
 }
 
 .count-button {
-  padding: 14px
-} 
+  padding: 14px;
+}
 @media only screen and (min-width: 600px) {
   .count-button {
-    padding: 22px
-  }  
+    padding: 22px;
+  }
 }
