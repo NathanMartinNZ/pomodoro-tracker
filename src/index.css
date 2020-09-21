@@ -35,3 +35,8 @@ body {
 .action-button.active {
   opacity: 1;
 }
+
+/* Reporting */
+.cust-chart {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}

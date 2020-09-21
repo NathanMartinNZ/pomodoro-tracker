@@ -64,6 +64,7 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
   };
 
   const handleKeyPress = (e) => {
+    console.log(e);
     if (e.key === "Enter") {
       setSelected(!selected);
     }
