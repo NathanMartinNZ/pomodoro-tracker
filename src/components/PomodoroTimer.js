@@ -78,7 +78,7 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
 
   return (
     <>
-      <Box>
+      <Box className="timer" style={{ textAlign: "center" }}>
         {/* Timer value */}
         {!selected && (
           <Typography variant="h1" onClick={toggleSelectTime}>
@@ -99,7 +99,12 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
 
         {/* Buttons */}
         {!!timeRemain && (
-          <Button variant="contained" color="primary" onClick={() => setPaused(!paused)}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setPaused(!paused)}
+            style={{ marginRight: 6 }}
+          >
             {paused ? "Start" : "Stop"}
           </Button>
         )}

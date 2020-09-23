@@ -10,6 +10,10 @@ body {
 }
 
 /* Pomodoro Timer */
+.timer input {
+  text-align: center;
+}
+
 .timer-input .MuiInput-input {
   font-size: 4rem;
 }
