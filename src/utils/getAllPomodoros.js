@@ -8,7 +8,6 @@ const getAllPomodoros = async () => {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
         data.push(doc.data());
       });
     });
