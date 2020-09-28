@@ -52,9 +52,10 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
   const timeRemain = startTime - time;
 
   const resetTimer = () => {
+    // Reset timer
     setTime(0);
     setPaused(true);
-    // Reset timer
+    // Reset alarm audio
     alarm.pause();
     alarm.currentTime = 0;
   };
