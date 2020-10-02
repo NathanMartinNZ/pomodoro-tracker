@@ -11,6 +11,7 @@ const Login = ({ history }) => {
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
+        // TODO: Fix persistence (not currently being added to local storage)
         await firebase.auth().setPersistence(firebaseAuth.Auth.Persistence.LOCAL);
         await firebase.auth().signInWithEmailAndPassword(email.value, password.value);
         history.push("/");

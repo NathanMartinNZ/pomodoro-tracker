@@ -1,6 +1,7 @@
 // Config file
-import firebase from "firebase";
-require("firebase/auth");
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
 
 const config = {
   apiKey: "AIzaSyBdtQPrz2z6KIoW_pvTnso2Tgn7W8p_UXU",

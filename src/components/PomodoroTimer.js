@@ -49,6 +49,7 @@ const formatTime = (time) => {
 const Timer = ({ time, setTime, paused, setPaused }) => {
   const [selected, setSelected] = useState(false);
   const [startTime, setStartTime] = useRecoilState(startTimeAtom);
+  const [inputValue, setInputValue] = useState("");
   const timeRemain = startTime - time;
 
   const resetTimer = () => {
@@ -66,14 +67,48 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
+      changeTime(fixIncompleteValue());
       setSelected(!selected);
+    } else if (e.key === "Backspace") {
+      const len = inputValue.length;
+      if (len <= 2 || len > 4) {
+        setInputValue(inputValue.slice(0, -1));
+      } else if (len === 4) {
+        setInputValue(inputValue.slice(0, -2));
+      }
+    } else if (parseInt(e.key) >= 0 && parseInt(e.key) < 10) {
+      const len = inputValue.length;
+      if (len <= 1) {
+        setInputValue(inputValue + e.key);
+      } else if (len === 2) {
+        setInputValue(inputValue + ":" + e.key);
+      } else if (len === 4) {
+        setInputValue(inputValue + e.key);
+      }
     }
   };
 
-  const handleTimeChange = (newTime) => {
-    const time = newTime.split(":");
-    const seconds = Number(time[0]) * 60 + Number(time[1]);
-    setStartTime(seconds);
+  const fixIncompleteValue = () => {
+    const len = inputValue.length;
+    if (len === 1) {
+      return "00:0" + inputValue;
+    } else if (len === 2) {
+      return "00:" + inputValue;
+    } else if (len === 4) {
+      return inputValue + "0";
+    } else if (len === 5) {
+      return inputValue;
+    } else {
+      return inputValue;
+    }
+  };
+
+  const changeTime = (newDisplayedTime) => {
+    if (newDisplayedTime) {
+      const time = newDisplayedTime.split(":");
+      const seconds = Number(time[0]) * 60 + Number(time[1]);
+      setStartTime(seconds);
+    }
   };
 
   return (
@@ -89,10 +124,11 @@ const Timer = ({ time, setTime, paused, setPaused }) => {
           <h1 className="MuiTypography-root MuiTypography-h1 timer-input">
             <TextField
               autoFocus
-              onChange={(e) => handleTimeChange(e.target.value)}
+              placeholder={formatTime(timeRemain)}
+              onFocus={() => setInputValue("")}
               onKeyDown={(e) => handleKeyPress(e)}
-              onBlur={toggleSelectTime}
-              value={formatTime(timeRemain)}
+              onBlur={() => (toggleSelectTime(), changeTime(fixIncompleteValue()))}
+              value={inputValue}
             />
           </h1>
         )}

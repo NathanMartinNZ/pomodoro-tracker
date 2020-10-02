@@ -19,7 +19,7 @@ const getInitialData = async () => {
         }
       });
       if (!foundDoc) {
-        firestoreDb.collection("pomodoros").add({ date: new Date().toDateString(), count: 0 });
+        firestoreDb.collection("pomodoros").add({ date: today, count: 0 });
       }
     });
 
